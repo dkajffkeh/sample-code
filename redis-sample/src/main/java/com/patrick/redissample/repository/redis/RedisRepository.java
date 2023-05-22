@@ -1,40 +1,66 @@
 package com.patrick.redissample.repository.redis;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.PostMapping;
 
 @Repository
 public class RedisRepository {
 
-    private final RedisTemplate<String, String> redisTemplate;
-    private final StringRedisTemplate stringRedisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public RedisRepository(
-            RedisTemplate<String, String> redisTemplate,
-            StringRedisTemplate stringRedisTemplate) {
+    public RedisRepository(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
-        this.stringRedisTemplate = stringRedisTemplate;
-    }
-
-
-    public String getRedisStringValue(String key) {
-        ValueOperations<String, String> stringValueOperations = stringRedisTemplate.opsForValue();
-        System.out.println(key +" : " + stringValueOperations.get(key));
-        return stringValueOperations.get(key);
     }
 
     public String getRedisValue(String key) {
         return (String)redisTemplate.opsForValue().get(key);
     }
 
-    @PostMapping("")
-    public String setRedisKey(Map<String, String> req){
-        ValueOperations<String, String> vop = redisTemplate.opsForValue();
+    public String setStringKey(Map<String, String> req){
+        ValueOperations<String, Object> vop = redisTemplate.opsForValue();
         vop.set(req.get("key"), req.get("value"));
         return "set message success";
+    }
+
+    public void rightPush(int rightValue) {
+        redisTemplate.opsForList().rightPush("list",String.valueOf(rightValue));
+    }
+
+    public List<String> getList() {
+        List<Object> values = redisTemplate.opsForList().range("list", 0, -1);
+        List<String> integerValues = new ArrayList<>();
+        for (Object value : values) {
+            integerValues.add((String) value);
+        }
+        return integerValues;
+    }
+
+    public void setPush(int setValue) {
+        redisTemplate.opsForSet().add("set",String.valueOf(setValue));
+    }
+
+    public Set<String> getIntegers() {
+        Set<Object> values = redisTemplate.opsForSet().members("set");
+        Set<String> integers = new HashSet<>();
+        for (Object value : values) {
+            integers.add((String) value);
+        }
+        return integers;
+    }
+
+    public void setHash(String key, String value) {
+        redisTemplate.opsForHash().put("hash",key,value);
+    }
+
+    public String getHash(String key) {
+        return (String)redisTemplate.opsForHash().get("hash",key);
     }
 }
