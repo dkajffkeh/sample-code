@@ -4,13 +4,20 @@ spring:
     consumer:
       bootstrap-servers: localhost:9092
       group-id: patrick_1
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      enable-auto-commit: false
+    listener:
+      concurrency: 1
+      ack-mode: manual_immediate
+      poll-timeout: 3000
+      type: single
     producer:
       bootstrap-servers: localhost:9092
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: 1
 
 server:
   port: 9991

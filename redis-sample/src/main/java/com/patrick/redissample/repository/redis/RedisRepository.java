@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
+
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Repository;
@@ -21,17 +22,25 @@ public class RedisRepository {
     }
 
     public String getRedisValue(String key) {
-        return (String)redisTemplate.opsForValue().get(key);
+        return (String) redisTemplate.opsForValue().get(key);
     }
 
-    public String setStringKey(Map<String, String> req){
+    public void put(String hashKey, String subKey, String value) {
+        redisTemplate.opsForHash().put(hashKey, subKey, value);
+    }
+
+    public Object getObjs(String hashKey, String subKey) {
+        return redisTemplate.opsForHash().get(hashKey, subKey);
+    }
+
+    public String setStringKey(Map<String, String> req) {
         ValueOperations<String, Object> vop = redisTemplate.opsForValue();
         vop.set(req.get("key"), req.get("value"));
         return "set message success";
     }
 
     public void rightPush(int rightValue) {
-        redisTemplate.opsForList().rightPush("list",String.valueOf(rightValue));
+        redisTemplate.opsForList().rightPush("list", String.valueOf(rightValue));
     }
 
     public List<String> getList() {
@@ -44,7 +53,7 @@ public class RedisRepository {
     }
 
     public void setPush(int setValue) {
-        redisTemplate.opsForSet().add("set",String.valueOf(setValue));
+        redisTemplate.opsForSet().add("set", String.valueOf(setValue));
     }
 
     public Set<String> getIntegers() {
@@ -57,10 +66,12 @@ public class RedisRepository {
     }
 
     public void setHash(String key, String value) {
-        redisTemplate.opsForHash().put("hash",key,value);
+        redisTemplate.opsForHash().put("hash", key, value);
     }
 
     public String getHash(String key) {
-        return (String)redisTemplate.opsForHash().get("hash",key);
+        return (String) redisTemplate.opsForHash().get("hash", key);
     }
+
+
 }
