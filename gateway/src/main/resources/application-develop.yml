@@ -1,0 +1,6 @@
+
+test:
+  profile: develop
+
+server:
+  port: 9999

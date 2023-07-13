@@ -19,18 +19,6 @@ public class SampleProducer {
 
     @GetMapping("/message/{message}")
     public void sendMessage(@PathVariable(value = "message") String message) {
-        ListenableFuture<SendResult<String, String>> response = kafkaTemplate.send("test", message);
-        response.addCallback(new ListenableFutureCallback<>() {
-            @Override
-            public void onSuccess(SendResult<String, String> result) {
-                System.out.println(result.getRecordMetadata().offset());
-                System.out.println(result.getRecordMetadata().hasOffset());
-            }
-
-            @Override
-            public void onFailure(Throwable ex) {
-                System.out.println("error");
-            }
-        });
+        kafkaTemplate.send("test", message);
     }
 }
