@@ -15,9 +15,7 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class NettyServer {
 
     private int port;
-
     // constructor
-
 
     public NettyServer(int port) {
         this.port = port;
