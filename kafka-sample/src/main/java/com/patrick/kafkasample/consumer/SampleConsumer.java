@@ -15,6 +15,5 @@ public class SampleConsumer {
 
         System.out.println("Done!" + message);
 
-        acknowledgment.acknowledge();
     }
 }
