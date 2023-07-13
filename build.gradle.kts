@@ -6,6 +6,20 @@ plugins {
 
 extra["springCloudVersion"] = "2021.0.5"
 
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    compileOnly {
+        extendsFrom(configurations.annotationProcessor.get())
+    }
+}
+
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
+
 subprojects {
     apply(plugin = "java")
     apply(plugin = "org.springframework.boot")
@@ -29,6 +43,7 @@ subprojects {
 
     dependencies {
         testImplementation("org.springframework.boot:spring-boot-starter-test")
+        implementation("io.netty:netty-all")
     }
 
     dependencyManagement {
@@ -78,6 +93,24 @@ project(":redis-sample") {
             implementation("org.springframework.boot:spring-boot-starter-data-redis-reactive")
             testImplementation("org.springframework.boot:spring-boot-starter-test")
             testImplementation("io.projectreactor:reactor-test")
+        }
+    }
+}
+
+project(":netty-server") {
+    dependencies {
+        dependencies {
+            implementation("org.springframework.boot:spring-boot-starter-web")
+            implementation("io.projectreactor.netty:reactor-netty:1.1.2")
+        }
+    }
+}
+
+project(":netty-client") {
+    dependencies {
+        dependencies {
+            implementation("org.springframework.boot:spring-boot-starter-web")
+            implementation("io.projectreactor.netty:reactor-netty:1.1.2")
         }
     }
 }

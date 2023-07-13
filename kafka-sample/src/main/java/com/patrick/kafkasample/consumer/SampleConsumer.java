@@ -7,12 +7,12 @@ import org.springframework.stereotype.Component;
 @Component
 public class SampleConsumer {
 
-    @KafkaListener(topics = {"test"})
-    public void consumer(String message, Acknowledgment acknowledgment) {
+    @KafkaListener(topics = {"recv-rcs.02"})
+    public void consumer(String message, Acknowledgment acknowledgment) throws InterruptedException {
         System.out.println(message);
+/*        Thread.sleep(20000L);
+
+        System.out.println("commit");*/
         acknowledgment.acknowledge();
-
-
-
     }
 }
