@@ -1,6 +1,6 @@
-package com.patrick.nettyserver.encode;
+package com.patrick.tcpprotocol.encode;
 
-import com.patrick.nettyserver.model.ResponseData;
+import com.patrick.tcpprotocol.model.ResponseData;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
@@ -10,7 +10,7 @@ public class ResponseDataEncoder
 
     @Override
     protected void encode(ChannelHandlerContext ctx,
-                          ResponseData msg, ByteBuf out) throws Exception {
+                          ResponseData msg, ByteBuf out) {
         out.writeInt(msg.getIntValue());
     }
 }

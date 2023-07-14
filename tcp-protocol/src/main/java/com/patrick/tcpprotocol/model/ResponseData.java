@@ -1,4 +1,4 @@
-package com.patrick.nettyserver.model;
+package com.patrick.tcpprotocol.model;
 
 public class ResponseData {
     private int intValue;

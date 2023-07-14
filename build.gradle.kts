@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     java
     id("org.springframework.boot") version "2.7.13-SNAPSHOT"
@@ -42,6 +44,7 @@ subprojects {
     }
 
     dependencies {
+        implementation("org.springframework.boot:spring-boot-starter")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         implementation("io.netty:netty-all")
     }
@@ -52,6 +55,20 @@ subprojects {
         }
     }
 }
+
+project(":tcp-protocol") {
+    dependencies {
+
+    }
+
+    val jar: Jar by tasks
+    val bootJar: BootJar by tasks
+
+    bootJar.enabled = false
+    jar.enabled = true
+
+}
+
 
 project(":gateway") {
     dependencies {
@@ -100,6 +117,7 @@ project(":redis-sample") {
 project(":netty-server") {
     dependencies {
         dependencies {
+            implementation(project(":tcp-protocol"))
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("io.projectreactor.netty:reactor-netty:1.1.2")
         }
@@ -109,6 +127,7 @@ project(":netty-server") {
 project(":netty-client") {
     dependencies {
         dependencies {
+            implementation(project(":tcp-protocol"))
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("io.projectreactor.netty:reactor-netty:1.1.2")
         }
