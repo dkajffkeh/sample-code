@@ -1,6 +1,6 @@
 package com.patrick.nettyclient;
 
-import com.patrick.nettyclient.handler.ClientHandler;
+
 import com.patrick.nettyclient.model.RequestData;
 import com.patrick.nettyclient.request.encode.RequestDataEncoder;
 import com.patrick.nettyclient.response.decode.ResponseDataDecoder;
@@ -24,19 +24,17 @@ public class NettyClient {
             b.option(ChannelOption.SO_KEEPALIVE, true);
             b.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
-                public void initChannel(SocketChannel ch)
-                        throws Exception {
+                public void initChannel(SocketChannel ch) {
                     ch.pipeline().addLast(
                             new RequestDataEncoder(),
-                            new ResponseDataDecoder(),
-                            new ClientHandler());
+                            new ResponseDataDecoder());
                 }
             });
 
             ChannelFuture f = b.connect(host, port).sync();
             if(f.isSuccess()){
                 RequestData requestData = new RequestData();
-                requestData.setStringValue("helloWorld");
+                requestData.setStringValue("Hello World");
                 requestData.setIntValue(123);
                 f.channel().writeAndFlush(requestData).sync();
             }
