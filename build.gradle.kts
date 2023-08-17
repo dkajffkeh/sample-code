@@ -134,5 +134,16 @@ project(":netty-client") {
     }
 }
 
+project(":jpa-sample") {
+    dependencies {
+        dependencies {
+            implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+            implementation("org.springframework.boot:spring-boot-starter-web")
+            implementation("org.hibernate:hibernate-ehcache")
+            runtimeOnly("com.h2database:h2")
+            testImplementation("org.springframework.boot:spring-boot-starter-test")
+        }
+    }
+}
 
 

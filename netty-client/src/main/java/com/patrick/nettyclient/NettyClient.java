@@ -1,17 +1,23 @@
 package com.patrick.nettyclient;
 
 import com.patrick.nettyclient.handler.ClientHandler;
-import com.patrick.nettyclient.model.RequestData;
 import com.patrick.nettyclient.request.encode.RequestDataEncoder;
-import com.patrick.nettyclient.response.decode.ResponseDataDecoder;
+import com.patrick.nettyclient.request.encode.SamplePacketEventWriteHandler;
+import com.patrick.tcpprotocol.model.RequestData;
+import com.patrick.tcpprotocol.protocol.Packet;
+import com.patrick.tcpprotocol.protocol.SamplePacket;
+import com.patrick.tcpprotocol.protocol.code.Command;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.channel.*;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
+import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 public class NettyClient {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws InterruptedException {
 
         String host = "localhost";
         int port = 9991;
@@ -28,20 +34,24 @@ public class NettyClient {
                         throws Exception {
                     ch.pipeline().addLast(
                             new RequestDataEncoder(),
-                            new ResponseDataDecoder(),
-                            new ClientHandler());
+                            new SamplePacketEventWriteHandler()/*,
+                            new ClientHandler()*/);
                 }
             });
 
-            ChannelFuture f = b.connect(host, port).sync();
-            if(f.isSuccess()){
-                RequestData requestData = new RequestData();
-                requestData.setStringValue("helloWorld");
-                requestData.setIntValue(123);
-                f.channel().writeAndFlush(requestData).sync();
+            ChannelFuture future = b.connect(host, port).sync();
+
+            if(future.isSuccess()) {
+                future.channel().writeAndFlush(samplePacket());
             }
+
         } finally {
             workerGroup.shutdownGracefully();
         }
+    }
+
+    private static Packet samplePacket() {
+        RequestData requestData = new RequestData(123,"Hello World");
+        return new SamplePacket<>(Command.SAMPLE_REQ, requestData);
     }
 }

@@ -1,24 +1,30 @@
 package com.patrick.nettyclient.request.encode;
 
-import com.patrick.nettyclient.model.RequestData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.patrick.tcpprotocol.protocol.Packet;
+import com.patrick.tcpprotocol.protocol.code.Command;
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufUtil;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
-
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
+import io.netty.util.CharsetUtil;
+import java.nio.CharBuffer;
 
 public class RequestDataEncoder
-        extends MessageToByteEncoder<RequestData> {
-
-    private final Charset charset = StandardCharsets.UTF_8;
+        extends MessageToByteEncoder<Packet> {
 
     @Override
     protected void encode(ChannelHandlerContext ctx,
-                          RequestData msg, ByteBuf out) {
+                          Packet msg, ByteBuf out) throws JsonProcessingException {
 
-        out.writeInt(msg.getIntValue());
-        out.writeInt(msg.getStringValue().length());
-        out.writeCharSequence(msg.getStringValue(), charset);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Command command = msg.getCommand();
+        String jsonString = objectMapper.writeValueAsString(msg.getOptions());
+        ByteBuf options = ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(jsonString), CharsetUtil.UTF_8);
+        out.writeInt(command.getCode());
+        out.writeBytes(options);
+        options.release();
+
     }
 }

@@ -1,4 +1,4 @@
-package com.patrick.tcpprotocol.encode;
+package com.patrick.tcpprotocol.handler.encoder;
 
 import com.patrick.tcpprotocol.model.ResponseData;
 import io.netty.buffer.ByteBuf;

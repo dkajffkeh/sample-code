@@ -1,4 +1,4 @@
-package com.patrick.tcpprotocol.decode;
+package com.patrick.tcpprotocol.handler.decode;
 
 import com.patrick.tcpprotocol.model.RequestData;
 import io.netty.channel.ChannelHandlerContext;
