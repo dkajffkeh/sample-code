@@ -58,7 +58,7 @@ subprojects {
 
 project(":tcp-protocol") {
     dependencies {
-
+        implementation("io.projectreactor.netty:reactor-netty:1.1.2")
     }
 
     val jar: Jar by tasks
@@ -118,8 +118,6 @@ project(":netty-server") {
     dependencies {
         dependencies {
             implementation(project(":tcp-protocol"))
-            implementation("org.springframework.boot:spring-boot-starter-web")
-            implementation("io.projectreactor.netty:reactor-netty:1.1.2")
         }
     }
 }
@@ -128,8 +126,28 @@ project(":netty-client") {
     dependencies {
         dependencies {
             implementation(project(":tcp-protocol"))
+        }
+    }
+}
+
+project(":reactor-netty-server") {
+    dependencies {
+        dependencies {
+            implementation(project(":tcp-protocol"))
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("io.projectreactor.netty:reactor-netty:1.1.2")
+            implementation("org.apache.httpcomponents:httpclient:4.5.14")
+        }
+    }
+}
+
+project(":reactor-netty-client") {
+    dependencies {
+        dependencies {
+            implementation(project(":tcp-protocol"))
+            implementation("org.springframework.boot:spring-boot-starter-web")
+            implementation("io.projectreactor.netty:reactor-netty:1.1.2")
+            implementation("org.apache.httpcomponents:httpclient:4.5.14")
         }
     }
 }
