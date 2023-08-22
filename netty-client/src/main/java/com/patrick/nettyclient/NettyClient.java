@@ -24,8 +24,7 @@ public class NettyClient {
             b.option(ChannelOption.SO_KEEPALIVE, true);
             b.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
-                public void initChannel(SocketChannel ch)
-                        throws Exception {
+                public void initChannel(SocketChannel ch) {
                     ch.pipeline().addLast(
                             new RequestDataEncoder(),
                             new ResponseDataDecoder(),

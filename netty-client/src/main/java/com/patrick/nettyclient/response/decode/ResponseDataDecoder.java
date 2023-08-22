@@ -12,7 +12,7 @@ public class ResponseDataDecoder
 
     @Override
     protected void decode(ChannelHandlerContext ctx,
-                          ByteBuf in, List<Object> out) throws Exception {
+                          ByteBuf in, List<Object> out) {
 
         ResponseData data = new ResponseData();
         data.setIntValue(in.readInt());

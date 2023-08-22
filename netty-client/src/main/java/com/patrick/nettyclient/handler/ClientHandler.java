@@ -7,12 +7,8 @@ import io.netty.channel.ChannelInboundHandlerAdapter;
 public class ClientHandler extends ChannelInboundHandlerAdapter {
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx)
-            throws Exception {
-
+    public void channelActive(ChannelHandlerContext ctx) {
         RequestData msg = new RequestData();
-        msg.setIntValue(123);
-        msg.setStringValue("all work and no play makes jack a dull boy");
         ctx.writeAndFlush(msg);
     }
 

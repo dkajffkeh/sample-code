@@ -3,8 +3,9 @@ package com.patrick.tcpprotocol.protocol;
 import com.patrick.tcpprotocol.protocol.code.Command;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
+import java.io.Serializable;
 
-public class SamplePacket<T> implements Packet {
+public class SamplePacket<T> implements Packet, Serializable {
 
     public static final ByteBuf STX = Unpooled.wrappedBuffer(new byte[] { 0x24, 0x02, 0x24 });
     public static final ByteBuf ETX = Unpooled.wrappedBuffer(new byte[] { 0x24, 0x03, 0x24 });
@@ -29,5 +30,9 @@ public class SamplePacket<T> implements Packet {
     @Override
     public Object getOptions() {
         return this.options;
+    }
+
+    public SamplePacket<T> makePacket(Command command, T message) {
+        return new SamplePacket<>(command, message);
     }
 }

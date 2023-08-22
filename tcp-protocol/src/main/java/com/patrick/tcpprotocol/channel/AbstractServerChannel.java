@@ -2,7 +2,6 @@ package com.patrick.tcpprotocol.channel;
 
 import com.patrick.tcpprotocol.decode.ByteToRequestDecoder;
 import com.patrick.tcpprotocol.decode.RequestDecoder;
-import com.patrick.tcpprotocol.encode.ResponseDataEncoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
@@ -25,8 +24,7 @@ public abstract class AbstractServerChannel extends ChannelInitializer<Channel>
     protected void initChannel(Channel ch) {
         ch.pipeline().addLast(
                 new ByteToRequestDecoder(),
-                new RequestDecoder(),
-                new ResponseDataEncoder());
+                new RequestDecoder());
     }
 
     @Override

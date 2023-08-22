@@ -59,6 +59,7 @@ subprojects {
 project(":tcp-protocol") {
     dependencies {
         implementation("io.projectreactor.netty:reactor-netty:1.1.2")
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
     }
 
     val jar: Jar by tasks
@@ -126,6 +127,7 @@ project(":netty-client") {
     dependencies {
         dependencies {
             implementation(project(":tcp-protocol"))
+            implementation("org.springframework.boot:spring-boot-starter-web")
         }
     }
 }

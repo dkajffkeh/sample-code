@@ -11,5 +11,4 @@ public class SampleNettyServer extends AbstractServerChannel {
         super.afterPropertiesSet();
     }
 
-
 }
