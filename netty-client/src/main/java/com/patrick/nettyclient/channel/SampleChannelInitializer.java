@@ -7,7 +7,7 @@ import io.netty.channel.socket.SocketChannel;
 public class SampleChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
-    protected void initChannel(SocketChannel ch) throws Exception {
+    protected void initChannel(SocketChannel ch) {
         ch.pipeline().addLast(
                 new RequestDataEncoder()
         );

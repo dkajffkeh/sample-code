@@ -29,12 +29,10 @@ public class ByteToRequestDecoder extends MessageToMessageDecoder<ByteBuf> {
                           ByteBuf msg, List<Object> out) throws JsonProcessingException {
         int totalBytes = msg.readableBytes();
 
-        msg.readSlice(3);
         int command = msg.readInt();
-        ByteBuf options = msg.readBytes(totalBytes - (3 + 4 + 3));
+        ByteBuf options = msg.readBytes(totalBytes - (Integer.BYTES));
         String json = options.toString(charset);
         SampleRequestPacket sampleRequestPacket = OBJECT_MAPPER.readValue(json, SampleRequestPacket.class);
-        msg.readSlice(3);
         LOGGER.info(sampleRequestPacket.toString());
         out.add(sampleRequestPacket);
     }

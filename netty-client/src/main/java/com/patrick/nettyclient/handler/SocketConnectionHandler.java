@@ -33,6 +33,7 @@ public class SocketConnectionHandler {
 
     private Bootstrap openBootStrap() {
         Bootstrap b = new Bootstrap();
+        int bytes = Long.BYTES;
         b.group(eventLoopGroup);
         b.channel(NioSocketChannel.class);
         b.option(ChannelOption.SO_KEEPALIVE, true);

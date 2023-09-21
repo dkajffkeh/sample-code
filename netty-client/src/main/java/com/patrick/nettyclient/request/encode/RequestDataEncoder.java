@@ -24,10 +24,8 @@ public class RequestDataEncoder
                         ctx.alloc(),
                         CharBuffer.wrap(new ObjectMapper().writeValueAsString(msg.getOptions())),
                         StandardCharsets.UTF_8);
-        out.writeBytes(SamplePacket.STX.copy());
         out.writeInt(command.getCode());
         out.writeBytes(options);
-        out.writeBytes(SamplePacket.STX.copy());
     }
 
 }
