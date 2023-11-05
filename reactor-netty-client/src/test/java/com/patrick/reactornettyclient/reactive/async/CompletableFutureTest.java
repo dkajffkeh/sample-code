@@ -1,6 +1,7 @@
 package com.patrick.reactornettyclient.reactive.async;
 
 import static java.lang.Thread.sleep;
+import static java.util.concurrent.CompletableFuture.allOf;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -86,6 +87,11 @@ public class CompletableFutureTest {
         });
     }
 
+    /**
+     * Completable Future 가 중첩되었을 경우 thenCompose 를 활용할 수 있음.
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     @Test
     void getFutureTest() throws ExecutionException, InterruptedException {
         var aResult = methodA();
@@ -93,7 +99,7 @@ public class CompletableFutureTest {
         var cResult = methodC();
         var dResult = methodD();
 
-        int result = CompletableFuture.allOf(aResult, bResult, cResult, dResult)
+        int result = allOf(aResult, bResult, cResult, dResult)
                 .thenApply(v -> {
                     try {
                         int a = aResult.get();

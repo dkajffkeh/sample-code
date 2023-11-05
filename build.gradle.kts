@@ -1,9 +1,13 @@
+import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
     java
     id("org.springframework.boot") version "2.7.13-SNAPSHOT"
     id("io.spring.dependency-management") version "1.0.15.RELEASE"
+    kotlin("jvm") version "1.6.21"
+    kotlin("plugin.spring") version "1.6.21"
+    kotlin("kapt") version "1.6.21"
 }
 
 extra["springCloudVersion"] = "2021.0.5"
@@ -24,6 +28,8 @@ tasks.withType<Test> {
 
 subprojects {
     apply(plugin = "java")
+    apply(plugin = "kotlin")
+    apply(plugin = "kotlin-kapt")
     apply(plugin = "org.springframework.boot")
     apply(plugin = "io.spring.dependency-management")
 
@@ -47,6 +53,8 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         implementation("io.netty:netty-all")
+
+        implementation("org.jetbrains.kotlin:kotlin-reflect")
     }
 
     dependencyManagement {
@@ -162,6 +170,35 @@ project(":jpa-sample") {
             implementation("org.hibernate:hibernate-ehcache")
             runtimeOnly("com.h2database:h2")
             testImplementation("org.springframework.boot:spring-boot-starter-test")
+        }
+    }
+}
+
+project(":reactor") {
+    dependencies {
+        dependencies {
+            implementation("org.springframework.boot:spring-boot-starter-webflux")
+            compileOnly("org.projectlombok:lombok")
+            annotationProcessor("org.projectlombok:lombok")
+            testImplementation("org.springframework.boot:spring-boot-starter-test")
+            testImplementation("io.projectreactor:reactor-test")
+        }
+    }
+}
+
+project(":fastcampus-user-service") {
+    dependencies {
+        dependencies {
+            implementation("org.springframework.boot:spring-boot-starter-data-r2dbc")
+            testImplementation("org.springframework.boot:spring-boot-starter-webflux")
+            implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
+            implementation("org.jetbrains.kotlin:kotlin-reflect")
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+            kapt("org.springframework.boot:spring-boot-configuration-processor")
+            runtimeOnly("com.h2database:h2")
+            runtimeOnly("io.r2dbc:r2dbc-h2")
+            testImplementation("org.springframework.boot:spring-boot-starter-test")
+            testImplementation("io.projectreactor:reactor-test")
         }
     }
 }
