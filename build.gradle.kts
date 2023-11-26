@@ -168,7 +168,7 @@ project(":jpa-sample") {
             implementation("org.springframework.boot:spring-boot-starter-data-jpa")
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("org.hibernate:hibernate-ehcache")
-            runtimeOnly("com.h2database:h2")
+            runtimeOnly("com.mysql:mysql-connector-j")
             testImplementation("org.springframework.boot:spring-boot-starter-test")
         }
     }

@@ -1,6 +1,6 @@
-package com.patrick.jpasample.api.param;
+package com.patrick.jpasample.primary.api.param;
 
-import com.patrick.jpasample.entity.member.MemberMst;
+import com.patrick.jpasample.primary.entity.member.MemberMst;
 
 public class CreateMemberRequestParam {
 

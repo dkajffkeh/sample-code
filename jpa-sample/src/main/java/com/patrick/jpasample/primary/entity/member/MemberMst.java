@@ -1,4 +1,4 @@
-package com.patrick.jpasample.entity.member;
+package com.patrick.jpasample.primary.entity.member;
 
 import javax.persistence.Cacheable;
 import javax.persistence.Column;
@@ -32,6 +32,10 @@ public class MemberMst {
 
     public MemberMst(Long id, String memberName) {
         this.id = id;
+        this.memberName = memberName;
+    }
+
+    public void updateMemberName(String memberName) {
         this.memberName = memberName;
     }
 }

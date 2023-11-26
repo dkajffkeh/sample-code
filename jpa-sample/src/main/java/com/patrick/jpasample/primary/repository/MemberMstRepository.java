@@ -1,6 +1,6 @@
-package com.patrick.jpasample.repository;
+package com.patrick.jpasample.primary.repository;
 
-import com.patrick.jpasample.entity.member.MemberMst;
+import com.patrick.jpasample.primary.entity.member.MemberMst;
 import org.springframework.data.repository.Repository;
 
 public interface MemberMstRepository extends Repository<MemberMst, Long> {
