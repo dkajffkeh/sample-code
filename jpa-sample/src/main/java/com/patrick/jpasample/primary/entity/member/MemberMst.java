@@ -38,4 +38,8 @@ public class MemberMst {
     public void updateMemberName(String memberName) {
         this.memberName = memberName;
     }
+
+    public String getMemberName() {
+        return this.memberName;
+    }
 }

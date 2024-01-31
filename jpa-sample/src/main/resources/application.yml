@@ -18,6 +18,15 @@ spring:
       dialect: org.hibernate.dialect.MySQL5Dialect
       hbm2ddl:
         auto: none
+  datasource-tertiary:
+    url: jdbc:mysql://10.147.1.90:23306/cmc_api?characterEncoding=UTF-8
+    username: imc-dev
+    password: humuson0722
+    driverClassName: com.mysql.cj.jdbc.Driver
+    hibernate:
+      dialect: org.hibernate.dialect.MySQL5Dialect
+      hbm2ddl:
+        auto: none
 
   jpa:
     database: mysql

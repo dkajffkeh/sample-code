@@ -203,4 +203,16 @@ project(":fastcampus-user-service") {
     }
 }
 
+project(":elasticsearch-sample") {
+    dependencies {
+        dependencies {
+            implementation("org.springframework.boot:spring-boot-starter-webflux")
+            developmentOnly("org.springframework.boot:spring-boot-devtools")
+            testImplementation("org.springframework.boot:spring-boot-starter-test")
+            testImplementation("io.projectreactor:reactor-test")
+            implementation("org.springframework.boot:spring-boot-starter-data-elasticsearch")
+        }
+    }
+}
+
 

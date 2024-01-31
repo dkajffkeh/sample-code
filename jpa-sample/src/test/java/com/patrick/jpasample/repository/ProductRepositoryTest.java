@@ -1,5 +1,8 @@
 package com.patrick.jpasample.repository;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import com.patrick.jpasample.primary.entity.member.MemberMst;
 import com.patrick.jpasample.primary.repository.MemberMstRepository;
 import org.junit.jupiter.api.Test;
@@ -20,6 +23,8 @@ class ProductRepositoryTest {
     void changeNameTest() {
         MemberMst memberMst = memberMstRepository.findById(1L);
         memberMst.updateMemberName("유호연");
+        MemberMst updatedMember = memberMstRepository.findById(1L);
+        assertEquals("유호연", updatedMember.getMemberName());
     }
 
 }
