@@ -1,2 +1,5 @@
 server:
   port: 34001
+
+logging:
+  config: classpath:logback-spring.xml

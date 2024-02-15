@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-@Document(indexName = "#{@indexNameProvider.getIndexName()}")
+@Document(indexName = "es-log")
 public class ElasticSearchTest {
 
     @Id
