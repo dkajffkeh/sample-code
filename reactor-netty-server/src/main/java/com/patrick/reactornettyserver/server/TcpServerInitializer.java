@@ -1,5 +1,6 @@
 package com.patrick.reactornettyserver.server;
 
+import com.patrick.reactornettyserver.handler.StringLogger;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerAdapter;
@@ -34,7 +35,7 @@ public class TcpServerInitializer {
                 .wiretap(true)
                 .runOn(loopResources)
                 .doOnConnection(connection -> {
-                    connection.addHandlerLast(new JsonObjectDecoder());
+                    connection.addHandlerLast(new StringLogger());
                     connection.addHandlerLast(new ChannelHandlerAdapter() {
                         @Override
                         public void handlerAdded(ChannelHandlerContext ctx) {

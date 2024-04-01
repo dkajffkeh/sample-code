@@ -4,11 +4,13 @@ import com.patrick.nettyclient.handler.ClientHandler;
 import com.patrick.nettyclient.model.RequestData;
 import com.patrick.nettyclient.request.encode.RequestDataEncoder;
 import com.patrick.nettyclient.response.decode.ResponseDataDecoder;
+import com.patrick.tcpprotocol.protocol.SampleRequestPacket;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.jetbrains.annotations.NotNull;
 
 public class NettyClient {
     public static void main(String[] args) throws Exception {
@@ -24,7 +26,7 @@ public class NettyClient {
             b.option(ChannelOption.SO_KEEPALIVE, true);
             b.handler(new ChannelInitializer<SocketChannel>() {
                 @Override
-                public void initChannel(SocketChannel ch) {
+                public void initChannel(@NotNull SocketChannel ch) {
                     ch.pipeline().addLast(
                             new RequestDataEncoder(),
                             new ResponseDataDecoder(),
@@ -34,10 +36,8 @@ public class NettyClient {
 
             ChannelFuture f = b.connect(host, port).sync();
             if(f.isSuccess()){
-                RequestData requestData = new RequestData();
-                requestData.setStringValue("helloWorld");
-                requestData.setIntValue(123);
-                f.channel().writeAndFlush(requestData).sync();
+                SampleRequestPacket sampleRequestPacket = new SampleRequestPacket("유호연", "010-9953-6824");
+                f.channel().writeAndFlush(sampleRequestPacket).sync();
             }
         } finally {
             workerGroup.shutdownGracefully();
