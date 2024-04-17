@@ -20,7 +20,7 @@ public class MemberMst {
     private Long id;
 
     @Column
-    private String memberName;
+    private String username;
 
     public MemberMst() {
 
@@ -30,16 +30,16 @@ public class MemberMst {
         this(null, memberName);
     }
 
-    public MemberMst(Long id, String memberName) {
+    public MemberMst(Long id, String username) {
         this.id = id;
-        this.memberName = memberName;
+        this.username = username;
     }
 
-    public void updateMemberName(String memberName) {
-        this.memberName = memberName;
+    public void updateUsername(String username) {
+        this.username = username;
     }
 
     public String getMemberName() {
-        return this.memberName;
+        return this.username;
     }
 }

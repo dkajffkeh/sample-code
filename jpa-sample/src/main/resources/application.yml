@@ -1,9 +1,9 @@
 
 spring:
   datasource-primary:
-    url: jdbc:mysql://localhost:3306/patricklab?useUnicode=true&serverTimezone=Asia/Seoul
-    username: patricklab
-    password: patricklab
+    url: jdbc:mysql://localhost:3306/patrick-lab?useUnicode=true&serverTimezone=Asia/Seoul
+    username: patrick-lab
+    password: patrick-lab
     driverClassName: com.mysql.cj.jdbc.Driver
     hibernate:
       dialect: org.hibernate.dialect.MySQL5Dialect
@@ -13,15 +13,6 @@ spring:
     url: jdbc:mysql://localhost:3306/patricklab-second?useUnicode=true&serverTimezone=Asia/Seoul
     username: patricklab-second
     password: patricklab-second
-    driverClassName: com.mysql.cj.jdbc.Driver
-    hibernate:
-      dialect: org.hibernate.dialect.MySQL5Dialect
-      hbm2ddl:
-        auto: none
-  datasource-tertiary:
-    url: jdbc:mysql://10.147.1.90:23306/cmc_api?characterEncoding=UTF-8
-    username: imc-dev
-    password: humuson0722
     driverClassName: com.mysql.cj.jdbc.Driver
     hibernate:
       dialect: org.hibernate.dialect.MySQL5Dialect

@@ -18,6 +18,6 @@ public class MemberMstService {
     @Transactional
     public void dirtyCheckingTest() {
         MemberMst memberMst = memberMstRepository.findById(1L);
-        memberMst.updateMemberName("유호연");
+        memberMst.updateUsername("유호연");
     }
 }

@@ -34,21 +34,22 @@ public class JpaPrimaryConfig {
     private String hbm2ddlAuto;
 
     @Bean
-    @Primary
+    //@Primary
     @ConfigurationProperties("spring.datasource-primary")
     public DataSourceProperties primaryDataSourceProperties() {
         return new DataSourceProperties();
     }
 
     @Bean
-    @Primary
+    //@Primary
     public DataSource primaryDataSource(DataSourceProperties primaryDataSourceProperties) {
-        return primaryDataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class)
+        return primaryDataSourceProperties.initializeDataSourceBuilder()
+                .type(HikariDataSource.class)
                 .build();
     }
 
     @Bean
-    @Primary
+    //@Primary
     public LocalContainerEntityManagerFactoryBean primaryEntityManagerFactory(
             EntityManagerFactoryBuilder primaryEntityManagerFactoryBuilder,
             DataSource primaryDataSource) {
@@ -56,7 +57,8 @@ public class JpaPrimaryConfig {
         Map<String, String> primaryJpaProperties = new HashMap<>();
         primaryJpaProperties.put("hibernate.dialect", dialect);
         primaryJpaProperties.put("hibernate.hbm2ddl.auto", hbm2ddlAuto);
-        primaryJpaProperties.put("hibernate.physical_naming_strategy", JpaNamingStrategy.class.getName());
+        primaryJpaProperties.put("hibernate.physical_naming_strategy",
+                JpaNamingStrategy.class.getName());
 
         return primaryEntityManagerFactoryBuilder
                 .dataSource(primaryDataSource)
@@ -67,7 +69,7 @@ public class JpaPrimaryConfig {
     }
 
     @Bean
-    @Primary
+    //@Primary
     public PlatformTransactionManager primaryTransactionManager(
             EntityManagerFactory primaryEntityManagerFactory) {
         return new JpaTransactionManager(primaryEntityManagerFactory);

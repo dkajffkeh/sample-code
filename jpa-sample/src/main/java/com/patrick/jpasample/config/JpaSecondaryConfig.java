@@ -12,6 +12,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -34,12 +35,14 @@ public class JpaSecondaryConfig {
     private String hbm2ddlAuto;
 
     @Bean
+    @Primary
     @ConfigurationProperties("spring.datasource-secondary")
     public DataSourceProperties secondaryDataSourceProperties() {
         return new DataSourceProperties();
     }
 
     @Bean
+    @Primary
     public DataSource secondaryDataSource(
             @Qualifier("secondaryDataSourceProperties") DataSourceProperties secondaryDataSourceProperties) {
         return secondaryDataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class)
@@ -47,6 +50,7 @@ public class JpaSecondaryConfig {
     }
 
     @Bean
+    @Primary
     public LocalContainerEntityManagerFactoryBean secondaryEntityManagerFactory(
             EntityManagerFactoryBuilder secondaryEntityManagerFactoryBuilder,
             @Qualifier("secondaryDataSource") DataSource secondaryDataSource) {
@@ -65,6 +69,7 @@ public class JpaSecondaryConfig {
     }
 
     @Bean
+    @Primary
     public PlatformTransactionManager secondaryTransactionManager(
             @Qualifier("secondaryEntityManagerFactory") EntityManagerFactory secondaryEntityManagerFactory) {
         return new JpaTransactionManager(secondaryEntityManagerFactory);

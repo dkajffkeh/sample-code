@@ -1,21 +1,13 @@
 package com.patrick.reactornettyclient.channel;
 
-import static reactor.core.publisher.DirectProcessor.create;
-
-import io.netty.channel.ChannelOption;
 import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.ImmediateEventExecutor;
 import java.time.Duration;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
 import org.reactivestreams.Publisher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.concurrent.MonoToListenableFutureAdapter;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoProcessor;
 import reactor.core.scheduler.Scheduler;
@@ -25,7 +17,6 @@ import reactor.netty.NettyOutbound;
 import reactor.netty.resources.ConnectionProvider;
 import reactor.netty.resources.LoopResources;
 import reactor.netty.tcp.TcpClient;
-import reactor.util.retry.Retry;
 
 public class ReactorClientChannel {
 
@@ -47,8 +38,7 @@ public class ReactorClientChannel {
         this.wiretab = wiretab;
     }
 
-    public void startup(int maxConns)
-            throws ExecutionException, InterruptedException, TimeoutException {
+    public void startup(int maxConns) {
         LoopResources loop = LoopResources.create("report-el", 1, 4, true);
 
         ConnectionProvider provider = ConnectionProvider.builder("fixed").maxConnections(maxConns)
@@ -57,38 +47,58 @@ public class ReactorClientChannel {
 
         MonoProcessor<Void> connectMono = MonoProcessor.create();
 
-        TcpClient tcpConn = TcpClient.create(provider)
+        Connection connection = TcpClient.create(provider)
                 .host(host)
                 .port(port)
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10_000)
-                .wiretap(true)
-                .runOn(loop)
-                .doOnConnected(connection -> this.channelGroup.add(connection.channel()))
-                .doOnDisconnected(connection -> this.channelGroup.clear());
+                .handle((inbound, outbound) -> outbound.sendString(Mono.just("hello")))
+                .connectNow();
 
-        tcpConn.handle((inbound, outbound) -> {
-                    log.info("Connection established.");
-                    final Scheduler scheduler = Schedulers.newParallel("tcp-client-scheduler");
-                    scheduler.schedule(() -> outbound.sendObject(Mono.just("Hello")).then().block());
-                    return create();
-                })
-                .connect()
-                .doOnNext(updateConnectMono(connectMono))
-                .doOnError(updateConnectMono(connectMono))
-                .doOnError(e -> {
-                    log.info(e.toString());
-                })
-                .flatMap(Connection::onDispose)             // post-connect issues
-                .retryWhen(Retry.from(signals -> signals
-                        .map(retrySignal -> (int) retrySignal.totalRetriesInARow())
-                        .flatMap(this::reconnect)))
-                .repeatWhen(flux -> flux
-                        .scan(1, (count, element) -> count++)
-                        .flatMap(this::reconnect))
-                .subscribe();
-
-        new MonoToListenableFutureAdapter<>(connectMono).get(10, TimeUnit.SECONDS);
+        connection.onDispose()
+                .block();
     }
+
+//    public void startup(int maxConns)
+//            throws ExecutionException, InterruptedException, TimeoutException {
+//        LoopResources loop = LoopResources.create("report-el", 1, 4, true);
+//
+//        ConnectionProvider provider = ConnectionProvider.builder("fixed").maxConnections(maxConns)
+//                .pendingAcquireTimeout(Duration.ofMillis(45_000)).maxIdleTime(Duration.ofMillis(-1))
+//                .build();
+//
+//        MonoProcessor<Void> connectMono = MonoProcessor.create();
+//
+//        TcpClient tcpConn = TcpClient.create(provider)
+//                .host(host)
+//                .port(port)
+//                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10_000)
+//                .wiretap(true)
+//                .runOn(loop)
+//                .doOnConnected(connection -> this.channelGroup.add(connection.channel()))
+//                .doOnDisconnected(connection -> this.channelGroup.clear());
+//
+//        tcpConn.handle((inbound, outbound) -> {
+//                    log.info("Connection established.");
+//                    final Scheduler scheduler = Schedulers.newParallel("tcp-client-scheduler");
+//                    scheduler.schedule(() -> outbound.sendObject(Mono.just("ㅁㄴㅇㅁㄴㅇ")).then().toFuture());
+//                    return create();
+//                })
+//                .connect()
+//                .doOnNext(updateConnectMono(connectMono))
+//                .doOnError(updateConnectMono(connectMono))
+//                .doOnError(e -> {
+//                    log.info(e.toString());
+//                })
+//                .flatMap(Connection::onDispose)             // post-connect issues
+//                .retryWhen(Retry.from(signals -> signals
+//                        .map(retrySignal -> (int) retrySignal.totalRetriesInARow())
+//                        .flatMap(this::reconnect)))
+//                .repeatWhen(flux -> flux
+//                        .scan(1, (count, element) -> count++)
+//                        .flatMap(this::reconnect))
+//                .subscribe();
+//
+//        new MonoToListenableFutureAdapter<>(connectMono).get(10, TimeUnit.SECONDS);
+//    }
 
     private void linkCheck(NettyOutbound outbound) {
         outbound.sendString(Mono.just("Linked"));

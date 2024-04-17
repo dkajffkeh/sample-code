@@ -22,7 +22,7 @@ class ProductRepositoryTest {
     @Transactional
     void changeNameTest() {
         MemberMst memberMst = memberMstRepository.findById(1L);
-        memberMst.updateMemberName("유호연");
+        memberMst.updateUsername("유호연");
         MemberMst updatedMember = memberMstRepository.findById(1L);
         assertEquals("유호연", updatedMember.getMemberName());
     }
