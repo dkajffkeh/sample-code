@@ -1,13 +1,13 @@
-package com.patrick.nettyclient.channel;
+package com.patrick.nettyclient.channel.initialize;
 
-import com.patrick.tcpprotocol.decode.ByteToJmsListenerIdDecoder;
 import com.patrick.tcpprotocol.decode.ByteToPacketDecoder;
+import com.patrick.tcpprotocol.encode.SampleStringToByteEncoder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import org.jetbrains.annotations.NotNull;
 
-public class JmsChannelInitializer extends ChannelInitializer<SocketChannel> {
+public class JmsClientChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(@NotNull SocketChannel ch) throws Exception {
@@ -16,7 +16,7 @@ public class JmsChannelInitializer extends ChannelInitializer<SocketChannel> {
         // decode
         pipeline.addLast(new ByteToPacketDecoder());
 
-        // incode
-
+        // encode
+        pipeline.addLast(new SampleStringToByteEncoder());
     }
 }

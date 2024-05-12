@@ -21,11 +21,10 @@ public class SampleJmsReportServer extends AbstractServerChannel {
 
     public SampleJmsReportServer(
             JmsListenerContainerFactory<?> jmsListenerContainerFactory,
-            JmsListenerEndpointRegistry registry,
-            ObjectMapper mapper) {
+            JmsListenerEndpointRegistry registry) {
         this.jmsListenerContainerFactory = jmsListenerContainerFactory;
         this.registry = registry;
-        this.mapper = mapper;
+        this.mapper = new ObjectMapper();
     }
 
 
@@ -37,12 +36,12 @@ public class SampleJmsReportServer extends AbstractServerChannel {
 
     @Override
     protected void initChannelPipeLine(ChannelPipeline cp) {
-        // Decode
-        cp.addLast(new ByteToJmsListenerIdDecoder());
-        cp.addLast(new JmsConnectHandler(jmsListenerContainerFactory, registry));
 
         // Encode
         cp.addLast(new SamplePacketToByteEncoder(mapper));
 
+        // Decode
+        cp.addLast(new ByteToJmsListenerIdDecoder());
+        cp.addLast(new JmsConnectHandler(jmsListenerContainerFactory, registry));
     }
 }

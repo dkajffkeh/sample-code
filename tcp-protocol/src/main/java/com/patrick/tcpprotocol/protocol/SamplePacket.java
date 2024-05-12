@@ -32,7 +32,4 @@ public class SamplePacket<T> implements Packet, Serializable {
         return this.options;
     }
 
-    public SamplePacket<T> makePacket(Command command, T message) {
-        return new SamplePacket<>(command, message);
-    }
 }

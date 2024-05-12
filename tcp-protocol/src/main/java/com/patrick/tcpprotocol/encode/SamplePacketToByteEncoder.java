@@ -23,9 +23,11 @@ public class SamplePacketToByteEncoder extends MessageToByteEncoder<Packet> {
     protected void encode(ChannelHandlerContext ctx, Packet msg, ByteBuf out) throws Exception {
         Command command = msg.getCommand();
         String jsonText = this.mapper.writeValueAsString(msg.getOptions());
+        ByteBuf options = ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(jsonText), CharsetUtil.UTF_8);
         out.writeBytes(SamplePacket.STX.copy());
         out.writeInt(command.getCode());
-        out.writeBytes(ByteBufUtil.encodeString(ctx.alloc(), CharBuffer.wrap(jsonText), CharsetUtil.UTF_8));
+        out.writeBytes(options);
         out.writeBytes(SamplePacket.ETX.copy());
+        options.release();
     }
 }

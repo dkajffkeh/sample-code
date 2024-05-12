@@ -4,6 +4,7 @@ import com.patrick.tcpprotocol.message.JmsHelloMessage;
 import com.patrick.tcpprotocol.protocol.SamplePacket;
 import com.patrick.tcpprotocol.protocol.code.Command;
 import io.netty.channel.ChannelHandlerContext;
+import java.util.concurrent.ExecutionException;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
@@ -22,8 +23,8 @@ public class ClientJmsSampleReportConsumer implements MessageListener {
         ObjectMessage objectMessage = (ObjectMessage) message;
         try {
             JmsHelloMessage jmsHelloMessage = (JmsHelloMessage) objectMessage.getObject();
-            context.writeAndFlush(new SamplePacket<>(Command.SAMPLE_REQ, jmsHelloMessage)).sync();
-        } catch (JMSException | InterruptedException e) {
+            context.writeAndFlush(new SamplePacket<JmsHelloMessage>(Command.SAMPLE_REQ, jmsHelloMessage)).get();
+        } catch (JMSException | InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
     }

@@ -52,7 +52,7 @@ subprojects {
         implementation("org.springframework.boot:spring-boot-starter")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         implementation("io.netty:netty-all")
-
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
     }
 
@@ -66,7 +66,6 @@ subprojects {
 project(":tcp-protocol") {
     dependencies {
         implementation("io.projectreactor.netty:reactor-netty:1.1.2")
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
     }
 
     val jar: Jar by tasks
