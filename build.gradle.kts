@@ -1,4 +1,3 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
@@ -103,6 +102,7 @@ project(":kafka-sample") {
 project(":activeMQ-sample") {
     dependencies {
         dependencies {
+            implementation(project(":tcp-protocol"))
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("org.springframework.boot:spring-boot-starter-activemq")
             implementation("org.springframework.boot:spring-boot-starter-artemis")
@@ -127,6 +127,8 @@ project(":netty-server") {
     dependencies {
         dependencies {
             implementation(project(":tcp-protocol"))
+            implementation("org.springframework.boot:spring-boot-starter-activemq")
+            implementation("org.springframework.boot:spring-boot-starter-artemis")
         }
     }
 }

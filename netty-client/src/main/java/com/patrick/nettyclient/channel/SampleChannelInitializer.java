@@ -1,15 +1,20 @@
 package com.patrick.nettyclient.channel;
 
-import com.patrick.nettyclient.request.encode.RequestDataEncoder;
+import com.patrick.tcpprotocol.encode.SampleStringToByteEncoder;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 
 public class SampleChannelInitializer extends ChannelInitializer<SocketChannel> {
 
     @Override
     protected void initChannel(SocketChannel ch) {
-        ch.pipeline().addLast(
-                new RequestDataEncoder()
-        );
+        ChannelPipeline cp = ch.pipeline();
+
+        // encode
+        cp.addLast(new SampleStringToByteEncoder());
+
+        // decode
+
     }
 }

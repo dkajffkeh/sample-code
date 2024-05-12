@@ -3,7 +3,7 @@ package com.patrick.nettyserver.channel.server;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.patrick.nettyserver.channel.handler.JmsConnectHandler;
 import com.patrick.tcpprotocol.channel.AbstractServerChannel;
-import com.patrick.tcpprotocol.decode.ByteToRequestDecoder;
+import com.patrick.tcpprotocol.decode.ByteToJmsListenerIdDecoder;
 import com.patrick.tcpprotocol.encode.SamplePacketToByteEncoder;
 import io.netty.channel.ChannelPipeline;
 import org.springframework.jms.config.JmsListenerContainerFactory;
@@ -11,36 +11,38 @@ import org.springframework.jms.config.JmsListenerEndpointRegistry;
 import org.springframework.stereotype.Component;
 
 @Component
-public class SampleNettyServer extends AbstractServerChannel {
+public class SampleJmsReportServer extends AbstractServerChannel {
 
     private final JmsListenerContainerFactory<?> jmsListenerContainerFactory;
+
     private final JmsListenerEndpointRegistry registry;
 
-    private final ObjectMapper objectMapper;
+    private final ObjectMapper mapper;
 
-    public SampleNettyServer(
+    public SampleJmsReportServer(
             JmsListenerContainerFactory<?> jmsListenerContainerFactory,
             JmsListenerEndpointRegistry registry,
-            ObjectMapper objectMapper) {
+            ObjectMapper mapper) {
         this.jmsListenerContainerFactory = jmsListenerContainerFactory;
         this.registry = registry;
-        this.objectMapper = objectMapper;
+        this.mapper = mapper;
     }
 
-
-    @Override
-    protected void initChannelPipeLine(ChannelPipeline cp) {
-        cp.addLast(
-                new ByteToRequestDecoder(),
-                new JmsConnectHandler(jmsListenerContainerFactory, registry));
-
-        cp.addLast(new SamplePacketToByteEncoder(objectMapper));
-    }
 
     @Override
     public void afterPropertiesSet() throws Exception {
         super.afterPropertiesSet();
-        super.start(9991);
+        super.start(32003);
     }
 
+    @Override
+    protected void initChannelPipeLine(ChannelPipeline cp) {
+        // Decode
+        cp.addLast(new ByteToJmsListenerIdDecoder());
+        cp.addLast(new JmsConnectHandler(jmsListenerContainerFactory, registry));
+
+        // Encode
+        cp.addLast(new SamplePacketToByteEncoder(mapper));
+
+    }
 }

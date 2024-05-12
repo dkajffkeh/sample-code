@@ -5,6 +5,8 @@ import com.patrick.tcpprotocol.decode.RequestDecoder;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelPipeline;
+import io.netty.channel.ChannelPromise;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
@@ -20,12 +22,15 @@ public abstract class AbstractServerChannel extends ChannelInitializer<Channel>
 
     private EventLoopGroup workerGroup;
 
+    private ServerBootstrap serverBootstrap;
+
+
     @Override
     protected void initChannel(Channel ch) {
-        ch.pipeline().addLast(
-                new ByteToRequestDecoder(),
-                new RequestDecoder());
+        this.initChannelPipeLine(ch.pipeline());
     }
+
+    protected abstract void initChannelPipeLine(ChannelPipeline cp);
 
     @Override
     public void destroy() {
@@ -45,15 +50,16 @@ public abstract class AbstractServerChannel extends ChannelInitializer<Channel>
         bossGroup = new NioEventLoopGroup();
         workerGroup = new NioEventLoopGroup();
 
-        final ServerBootstrap serverBootstrap;
-
         serverBootstrap = new ServerBootstrap();
         serverBootstrap.group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
                 .handler(new LoggingHandler(LogLevel.INFO))
                 .childHandler(this);
 
-        serverBootstrap.bind(9991).sync();
+    }
+
+    public void start(int port) throws InterruptedException {
+        this.serverBootstrap.bind(port).sync();
     }
 
 }
