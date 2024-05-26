@@ -145,6 +145,7 @@ project(":reactor-netty-server") {
     dependencies {
         dependencies {
             implementation(project(":tcp-protocol"))
+            implementation("org.springframework.boot:spring-boot-starter-webflux")
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("io.projectreactor.netty:reactor-netty:1.1.2")
             implementation("org.apache.httpcomponents:httpclient:4.5.14")
@@ -156,6 +157,7 @@ project(":reactor-netty-client") {
     dependencies {
         dependencies {
             implementation(project(":tcp-protocol"))
+            implementation("org.springframework.boot:spring-boot-starter-webflux")
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("io.projectreactor.netty:reactor-netty:1.1.2")
             implementation("org.apache.httpcomponents:httpclient:4.5.14")
