@@ -1,5 +1,7 @@
 package com.patrick.reactor.scheduler;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +58,8 @@ public class SchedulerTest {
                 .subscribeOn(Schedulers.boundedElastic())
                 .doOnNext(log::info) // B Thread
                 .subscribe();// B Thread
+
+
     }
 
 }
