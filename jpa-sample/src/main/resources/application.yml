@@ -19,9 +19,14 @@ spring:
       hbm2ddl:
         auto: none
 
+  redis:
+    host: 127.0.0.1
+    port: 6379
+
+
   jpa:
     database: mysql
-    show-sql: true
+    show-sql: false
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
     hibernate:
       ddl-auto: none

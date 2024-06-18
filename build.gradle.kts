@@ -95,6 +95,8 @@ project(":kafka-sample") {
         implementation("org.springframework.kafka:spring-kafka")
         testImplementation("org.springframework.boot:spring-boot-starter-test")
         testImplementation("org.springframework.kafka:spring-kafka-test")
+        implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+        runtimeOnly("com.mysql:mysql-connector-j")
     }
 }
 
@@ -168,9 +170,11 @@ project(":reactor-netty-client") {
 project(":jpa-sample") {
     dependencies {
         dependencies {
-            implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+            implementation("org.springframework.kafka:spring-kafka")
+            implementation("org.springframework.boot:spring-boot-starter-data-redis")
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("org.hibernate:hibernate-ehcache")
+            implementation("org.springframework.boot:spring-boot-starter-data-jpa")
             runtimeOnly("com.mysql:mysql-connector-j")
             testImplementation("org.springframework.boot:spring-boot-starter-test")
         }
