@@ -33,7 +33,6 @@ subprojects {
     apply(plugin = "io.spring.dependency-management")
 
     group = "com.patrick"
-    version = "0.0.1-SNAPSHOT"
     java.sourceCompatibility = JavaVersion.VERSION_17
 
     tasks.register("prepareKotlinBuildScriptModel") {}
@@ -230,6 +229,10 @@ project(":docker-app") {
             testRuntimeOnly("org.junit.platform:junit-platform-launcher")
         }
     }
+    version = "0.0.1"
+
+    val jar: Jar by tasks
+    jar.enabled = false
 }
 
 

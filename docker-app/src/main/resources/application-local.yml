@@ -1,0 +1,6 @@
+server:
+  port: 9999
+
+docker:
+  config:
+    test: ${HELLO_CONFIG:Hello Docker!!}
