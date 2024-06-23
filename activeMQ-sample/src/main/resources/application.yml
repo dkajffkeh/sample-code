@@ -1,8 +1,6 @@
 
 
 spring:
-
-
   activemq:
     broker-url: "tcp://localhost:61616?jms.useAsyncSend=true&wireFormat.tightEncodingEnabled=false"
     user: admin

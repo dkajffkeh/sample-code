@@ -18,6 +18,7 @@
 	</appender>
 	</springProfile>
 
+
 	<springProfile name="production">
 		<appender name="dailyRollingFileAppender" class="ch.qos.logback.core.rolling.RollingFileAppender">
 			<prudent>true</prudent>

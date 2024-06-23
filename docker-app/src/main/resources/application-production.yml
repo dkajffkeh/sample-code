@@ -4,3 +4,9 @@ server:
 docker:
   config:
     test: ${HELLO_CONFIG:Hello Docker!!}
+
+spring:
+  activemq:
+    broker-url: tcp://${ACTIVE_MQ_HOST:activeMq}:61616?jms.useAsyncSend=true&wireFormat.tightEncodingEnabled=false
+    user: admin
+    password: admin

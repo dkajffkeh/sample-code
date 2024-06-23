@@ -10,7 +10,7 @@ MODULE_NAME=$1
 
 # Execute the Gradle command
 echo "Building module: $MODULE_NAME"
-gradle clean -x test :$MODULE_NAME:build
+gradle clean -x test :"$MODULE_NAME":build
 
 # Check if the Gradle command was successful
 if [ $? -ne 0 ]; then
