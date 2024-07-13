@@ -7,7 +7,7 @@ import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component
 public class ActiveMQConnectionVerifier {
 
     private final JmsMessagingTemplate jmsMessagingTemplate;
@@ -23,6 +23,7 @@ public class ActiveMQConnectionVerifier {
     @PostConstruct
     public void verifyActiveMQConnection() {
         try {
+            LOGGER.info("Sending a ping message to ActiveMQ");
             jmsMessagingTemplate.convertAndSend("ping", "ping");
         } catch (Exception e) {
             // 예외 발생 시 애플리케이션 종료

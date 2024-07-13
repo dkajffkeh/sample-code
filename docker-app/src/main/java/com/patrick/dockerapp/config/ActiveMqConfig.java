@@ -4,13 +4,11 @@ import javax.jms.ConnectionFactory;
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.jms.annotation.EnableJms;
 import org.springframework.jms.core.JmsMessagingTemplate;
 import org.springframework.jms.core.JmsTemplate;
 
-@EnableJms
-@Configuration
+//@EnableJms
+//@Configuration
 public class ActiveMqConfig {
 
     @Value("${spring.activemq.broker-url}")

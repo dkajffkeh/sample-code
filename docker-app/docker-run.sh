@@ -18,6 +18,6 @@ docker run -d --name "$MODULE_NAME" \
     -e SPRING_PROFILE="production" \
     -e ACTIVE_MQ_HOST="activeMq" \
     -e TZ=Asia/Seoul \
-    --network my-network\
+    --network my-network \
     -p 8877:8080 \
     yhy1045/docker-app:1.0.0

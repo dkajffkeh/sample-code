@@ -5,6 +5,6 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-docker build -t yhy1045/docker-app:"$1" .
+docker build -t yhy1045/docker-app:"$1" -f ../../docker-app/Dockerfile ../../docker-app
 
 docker push yhy1045/docker-app:"$1"

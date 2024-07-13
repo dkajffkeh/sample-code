@@ -1,0 +1,35 @@
+version: '3'
+services:
+  docker-app:
+    container_name: da1
+    image: docker-app:1.0.0
+    volumes:
+      - /Users/patrickyoo/data/logs/docker-app:/log/docker-app
+    environment:
+      - HELLO_CONFIG=Hello Config!!
+      - SPRING_PROFILE=production
+      - ACTIVE_MQ_HOST=activeMq
+      - TZ=Asia/Seoul
+    networks:
+      - my-network
+    ports:
+      - "8877:8080"
+  docker-app-2:
+    container_name: da2
+    image: docker-app:1.0.0
+    volumes:
+      - /Users/patrickyoo/data/logs/docker-app:/log/docker-app
+    environment:
+      - HELLO_CONFIG=Hello Config!!
+      - SPRING_PROFILE=production
+      - ACTIVE_MQ_HOST=activeMq
+      - TZ=Asia/Seoul
+    networks:
+      - my-network
+    ports:
+      - "8878:8080"
+
+networks:
+  my-network:
+    external:
+      name: my-network
