@@ -7,7 +7,6 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
 public class JpaNamingStrategy extends PhysicalNamingStrategyStandardImpl {
 /*    private static final String PREFIX = "tb_";*/
 
-
     @Override
     public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
         /*Identifier prefixedTableName = new Identifier(PREFIX + camelToSnake(name.getText()), name.isQuoted());*/

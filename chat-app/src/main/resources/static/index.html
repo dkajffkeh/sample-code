@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<head>
+  <title>Hello WebSocket</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@stomp/stompjs@7.0.0/bundles/stomp.umd.min.js"></script>
+</head>
+<body>
+<noscript><h2 style="color: #ff0000">Seems your browser doesn't support Javascript! Websocket relies on Javascript being
+  enabled. Please enable
+  Javascript and reload this page!</h2></noscript>
+<div id="main-content" class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="connect">WebSocket connection:</label>
+          <button id="connect" class="btn btn-default" type="submit">Connect</button>
+          <button id="disconnect" class="btn btn-default" type="submit" disabled="disabled">Disconnect
+          </button>
+          <button id="room-connect" class="btn btn-default" type="submit" >Room Connect
+          </button>
+          <button id="rooms" class="btn btn-default" type="submit" >Rooms
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <form class="form-inline">
+        <div class="form-group">
+          <label for="from">from</label>
+          <input type="text" id="from" class="form-control" placeholder="Your name here...">
+          <label for="to">to</label>
+          <input type="text" id="to" class="form-control" placeholder="Your name here...">
+          <label for="message">message</label>
+          <input type="text" id="message" class="form-control" placeholder="Your name here...">
+        </div>
+        <button id="send" class="btn btn-default" type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <table id="conversation" class="table table-striped">
+        <thead>
+        <tr>
+          <th>채팅 내용</th>
+        </tr>
+        </thead>
+        <tbody id="greetings">
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</body>
+
+<script>
+  const stompClient = new StompJs.Client({
+    brokerURL: 'ws://localhost:8080/chat'
+  });
+
+  function setConnected(connected) {
+    $("#connect").prop("disabled", connected);
+    $("#disconnect").prop("disabled", !connected);
+    if (connected) {
+      $("#conversation").show();
+    }
+    else {
+      $("#conversation").hide();
+    }
+    $("#greetings").html("");
+  }
+
+  function getRooms() {
+    stompClient.publish({
+      destination: "/app/rooms"
+    });
+  }
+
+
+  function getRoomsSubscribe() {
+    stompClient.subscribe('/topic/rooms', (rooms) => {
+      showGreeting(rooms.body);
+    });
+  }
+
+  function connect() {
+    stompClient.activate();
+    setConnected(true);
+  }
+
+  function disconnect() {
+    stompClient.deactivate();
+    setConnected(false);
+    console.log("Disconnected");
+  }
+
+  function sendName() {
+
+    const value = {
+      from : $("#from").val(),
+      to : $("#to").val(),
+      message : $("#message").val()
+    }
+
+    stompClient.publish({
+      destination: "/app/hello",
+      body: JSON.stringify(value)
+    });
+  }
+
+  function showGreeting(message) {
+    $("#greetings").append("<tr><td>" + message + "</td></tr>");
+  }
+
+  $(function () {
+    $("form").on('submit', (e) => e.preventDefault());
+    $( "#connect" ).click(() => connect());
+    $( "#disconnect" ).click(() => disconnect());
+    $( "#send" ).click(() => sendName());
+    $("#room-connect").click(() => getRoomsSubscribe());
+    $("#rooms").click(() => getRooms());
+  });
+</script>
+
+</html>

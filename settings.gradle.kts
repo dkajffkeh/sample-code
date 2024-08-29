@@ -7,6 +7,7 @@ pluginManagement {
 }
 
 rootProject.name = "sample-code"
+include("chat-app")
 include("gateway")
 include("kafka-sample")
 include("activeMQ-sample")

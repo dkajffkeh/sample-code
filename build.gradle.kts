@@ -53,6 +53,7 @@ subprojects {
         implementation("io.netty:netty-all")
         implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
+
     }
 
     dependencyManagement {
@@ -220,6 +221,19 @@ project(":elasticsearch-sample") {
         }
     }
 }
+
+project(":chat-app") {
+    dependencies {
+        implementation("org.springframework.boot:spring-boot-starter-web")
+        testImplementation("org.springframework.boot:spring-boot-starter-test")
+        testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+        implementation("org.springframework.boot:spring-boot-starter-websocket")
+        implementation("org.webjars:sockjs-client:1.1.2")
+        implementation("org.webjars:stomp-websocket:2.3.3-1")
+    }
+}
+
+
 
 project(":docker-app") {
     dependencies {
