@@ -1,14 +1,13 @@
-package com.patrick.reactor;
+package com.patrick.layeredarchitecture;
 
-import com.patrick.reactor.payload.HelloPayload;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ReactorApplication {
+public class LayeredArchitectureApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(ReactorApplication.class, args);
+        SpringApplication.run(LayeredArchitectureApplication.class, args);
     }
 
 }

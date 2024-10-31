@@ -22,4 +22,4 @@ include("reactor")
 include("fastcampus-user-service")
 include("elasticsearch-sample")
 include("docker-app")
-
+include("layered-architecture")

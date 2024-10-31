@@ -1,28 +1,23 @@
-package com.patrick.chatapp.api;
+package com.patrick.chatapp.api.room;
 
 import com.patrick.chatapp.api.payload.request.ChatSampleRequest;
-import java.util.Arrays;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class GreetingController {
+public class RoomSubscribeController {
 
     private final SimpMessageSendingOperations messageSendingOperations;
 
-    public GreetingController(
+    public RoomSubscribeController(
             SimpMessageSendingOperations messageSendingOperations) {
         this.messageSendingOperations = messageSendingOperations;
     }
 
-    @MessageMapping("/hello")
-    public void greeting(ChatSampleRequest message) throws Exception {
-        messageSendingOperations.convertAndSend("/topic/chat/room/" + message.getTo() , message.getMessage());
+    @MessageMapping("/room")
+    public void greeting(ChatSampleRequest message) {
+        messageSendingOperations.convertAndSend("/topic/chat/room/" + message.to() , message.message());
     }
 
-    @MessageMapping("/rooms")
-    public void rooms() {
-        messageSendingOperations.convertAndSend("/topic/rooms" , Arrays.asList(1,2,3,4,5));
-    }
 }

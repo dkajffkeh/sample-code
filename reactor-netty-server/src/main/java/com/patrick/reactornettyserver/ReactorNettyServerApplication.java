@@ -19,8 +19,8 @@ public class ReactorNettyServerApplication {
         SpringApplication.run(ReactorNettyServerApplication.class, args);
     }
 
-    @EventListener(ApplicationReadyEvent.class)
+    /*@EventListener(ApplicationReadyEvent.class)
     public void init() {
         tcpServerInitializer.startServer();
-    }
+    }*/
 }

@@ -37,10 +37,10 @@ public class SampleJmsReportServer extends AbstractServerChannel {
     @Override
     protected void initChannelPipeLine(ChannelPipeline cp) {
 
-        // Encode
+        // Encode outbound handlers
         cp.addLast(new SamplePacketToByteEncoder(mapper));
 
-        // Decode
+        // Decode inbound handlers
         cp.addLast(new ByteToJmsListenerIdDecoder());
         cp.addLast(new JmsConnectHandler(jmsListenerContainerFactory, registry));
     }

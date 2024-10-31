@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.ir.backend.js.compile
 import org.springframework.boot.gradle.tasks.bundling.BootJar
 
 plugins {
@@ -54,6 +55,8 @@ subprojects {
         implementation("com.fasterxml.jackson.core:jackson-databind:2.12.3")
         implementation("org.jetbrains.kotlin:kotlin-reflect")
 
+        compileOnly("org.projectlombok:lombok")
+        annotationProcessor("org.projectlombok:lombok")
     }
 
     dependencyManagement {
@@ -148,7 +151,6 @@ project(":reactor-netty-server") {
         dependencies {
             implementation(project(":tcp-protocol"))
             implementation("org.springframework.boot:spring-boot-starter-webflux")
-            implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("io.projectreactor.netty:reactor-netty:1.1.2")
             implementation("org.apache.httpcomponents:httpclient:4.5.14")
         }
@@ -160,7 +162,6 @@ project(":reactor-netty-client") {
         dependencies {
             implementation(project(":tcp-protocol"))
             implementation("org.springframework.boot:spring-boot-starter-webflux")
-            implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("io.projectreactor.netty:reactor-netty:1.1.2")
             implementation("org.apache.httpcomponents:httpclient:4.5.14")
         }
@@ -185,8 +186,6 @@ project(":reactor") {
     dependencies {
         dependencies {
             implementation("org.springframework.boot:spring-boot-starter-webflux")
-            compileOnly("org.projectlombok:lombok")
-            annotationProcessor("org.projectlombok:lombok")
             testImplementation("org.springframework.boot:spring-boot-starter-test")
             testImplementation("io.projectreactor:reactor-test")
         }
@@ -250,5 +249,19 @@ project(":docker-app") {
     jar.enabled = false
 }
 
+project(":layered-architecture") {
+    dependencies {
+        dependencies {
+            implementation("org.springframework.boot:spring-boot-starter-web")
+            testImplementation("org.springframework.boot:spring-boot-starter-test")
+            implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+            runtimeOnly("com.h2database:h2")
+        }
+    }
+    version = "0.0.1"
+
+    val jar: Jar by tasks
+    jar.enabled = false
+}
 
 
