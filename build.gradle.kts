@@ -175,9 +175,11 @@ project(":jpa-sample") {
             implementation("org.springframework.boot:spring-boot-starter-data-redis")
             implementation("org.springframework.boot:spring-boot-starter-web")
             implementation("org.hibernate:hibernate-ehcache")
+            testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc:2.0.6.RELEASE")
             implementation("org.springframework.boot:spring-boot-starter-data-jpa")
             runtimeOnly("com.mysql:mysql-connector-j")
             testImplementation("org.springframework.boot:spring-boot-starter-test")
+            testImplementation("org.mockito:mockito-inline:2.13.0")
         }
     }
 }
