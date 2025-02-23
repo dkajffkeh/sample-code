@@ -11,6 +11,7 @@ plugins {
 }
 
 extra["springCloudVersion"] = "2021.0.5"
+extra["queryDslVersion"] = "5.0.0"
 
 repositories {
     mavenCentral()
@@ -171,6 +172,10 @@ project(":reactor-netty-client") {
 project(":jpa-sample") {
     dependencies {
         dependencies {
+            implementation("com.querydsl:querydsl-jpa:${property("queryDslVersion")}")
+            kapt("com.querydsl:querydsl-apt:${property("queryDslVersion")}:jpa")
+
+
             implementation("org.springframework.kafka:spring-kafka")
             implementation("org.springframework.boot:spring-boot-starter-data-redis")
             implementation("org.springframework.boot:spring-boot-starter-web")
@@ -181,6 +186,9 @@ project(":jpa-sample") {
             testImplementation("org.springframework.boot:spring-boot-starter-test")
             testImplementation("org.mockito:mockito-inline:2.13.0")
         }
+    }
+    kapt {
+        keepJavacAnnotationProcessors = true
     }
 }
 
